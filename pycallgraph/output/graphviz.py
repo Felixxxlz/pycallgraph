@@ -1,4 +1,4 @@
-from __future__ import division
+
 
 import tempfile
 import os
@@ -101,24 +101,24 @@ class GraphvizOutput(Output):
         with os.fdopen(fd, 'w') as f:
             f.write(source)
 
-        cmd = '"{0}" -T{1} -o{2} {3}'.format(
-            self.tool, self.output_type, self.output_file, temp_name
-        )
+        # cmd = '"{0}" -T{1} -o{2} {3}'.format(
+        #     self.tool, self.output_type, self.output_file, temp_name
+        # )
 
-        self.verbose('Executing: {0}'.format(cmd))
-        try:
-            proc = sub.Popen(cmd, stdout=sub.PIPE, stderr=sub.PIPE, shell=True)
-            ret, output = proc.communicate()
-            if ret:
-                raise PyCallGraphException(
-                    'The command "%(cmd)s" failed with error '
-                    'code %(ret)i.' % locals())
-        finally:
-            os.unlink(temp_name)
+        # self.verbose('Executing: {0}'.format(cmd))
+        # try:
+        #     proc = sub.Popen(cmd, stdout=sub.PIPE, stderr=sub.PIPE, shell=True)
+        #     ret, output = proc.communicate()
+        #     if ret:
+        #         raise PyCallGraphException(
+        #             'The command "%(cmd)s" failed with error '
+        #             'code %(ret)i.' % locals())
+        # finally:
+        #     os.unlink(temp_name)
 
-        self.verbose('Generated {0} with {1} nodes.'.format(
-            self.output_file, len(self.processor.func_count),
-        ))
+        # self.verbose('Generated {0} with {1} nodes.'.format(
+        #     self.output_file, len(self.processor.func_count),
+        # ))
 
     def generate(self):
         '''Returns a string with the contents of a DOT file for Graphviz to
@@ -151,7 +151,7 @@ class GraphvizOutput(Output):
 
     def attrs_from_dict(self, d):
         output = []
-        for attr, val in d.iteritems():
+        for attr, val in d.items():
             output.append('%s = "%s"' % (attr, val))
         return ', '.join(output)
 
@@ -167,7 +167,7 @@ class GraphvizOutput(Output):
 
     def generate_attributes(self):
         output = []
-        for section, attrs in self.graph_attributes.iteritems():
+        for section, attrs in self.graph_attributes.items():
             output.append('{0} [ {1} ];'.format(
                 section, self.attrs_from_dict(attrs),
             ))
@@ -207,11 +207,13 @@ class GraphvizOutput(Output):
     def generate_edges(self):
         output = []
 
-        for edge in self.processor.edges():
-            attr = {
-                'color': self.edge_color_func(edge).rgba_web(),
-                'label': self.edge_label_func(edge),
-            }
-            output.append(self.edge(edge, attr))
+        with open("scipy_callgraph.txt", mode="w", encoding="utf-8") as wf:
+            for edge in self.processor.edges():
+                wf.write("%s %s\n" % (edge.src_func, edge.dst_func))
+                attr = {
+                    'color': self.edge_color_func(edge).rgba_web(),
+                    'label': self.edge_label_func(edge),
+                }
+                output.append(self.edge(edge, attr))
 
         return output

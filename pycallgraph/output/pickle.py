@@ -1,7 +1,7 @@
 try:
-    import cPickle as pickle
+    import pickle as pickle
 except ImportError:
-    import pickle
+    from . import pickle
 
 from .output import Output
 

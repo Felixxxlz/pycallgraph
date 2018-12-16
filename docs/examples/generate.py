@@ -57,7 +57,7 @@ for info in yaml.load(open('examples.yml')):
     )
 
 
-    print(info['run'])
+    print((info['run']))
 
     # If the hash of the example hasn't changed, don't run again
     filemd5 = hashlib.md5(open(info['script']).read()).hexdigest()
@@ -67,7 +67,7 @@ for info in yaml.load(open('examples.yml')):
         subprocess.call(info['run'], shell=True)
 
         if 'execute_after' in info:
-            print('Running {}'.format(info['execute_after']))
+            print(('Running {}'.format(info['execute_after'])))
             subprocess.call(info['execute_after'], shell=True)
 
 

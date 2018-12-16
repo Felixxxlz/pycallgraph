@@ -43,8 +43,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'Python Call Graph'
-copyright = u'2007-2013 Gerald Kaszuba, et al.'
+project = 'Python Call Graph'
+copyright = '2007-2013 Gerald Kaszuba, et al.'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -189,8 +189,8 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'PythonCallGraph.tex', u'Python Call Graph',
-   u'Gerald Kaszuba', 'manual'),
+  ('index', 'PythonCallGraph.tex', 'Python Call Graph',
+   'Gerald Kaszuba', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -219,7 +219,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('guide/command_line_usage', 'pycallgraph', u'Python Call Graph',
+    ('guide/command_line_usage', 'pycallgraph', 'Python Call Graph',
     	['''pycallgraph was written by Gerald Kaszuba <pycallgraph@slowchop.com>.
 
 This manual page was originally written by Jan Alonzo <jmalonzo@unpluggable.com>, for the Debian GNU/Linux system.
@@ -236,8 +236,8 @@ This manual page was originally written by Jan Alonzo <jmalonzo@unpluggable.com>
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'PythonCallGraph', u'Python Call Graph',
-   u'Gerald Kaszuba', 'PythonCallGraph', 'One line description of project.',
+  ('index', 'PythonCallGraph', 'Python Call Graph',
+   'Gerald Kaszuba', 'PythonCallGraph', 'One line description of project.',
    'Miscellaneous'),
 ]
 

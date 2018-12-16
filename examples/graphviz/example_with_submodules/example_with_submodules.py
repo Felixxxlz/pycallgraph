@@ -1,5 +1,5 @@
-from submodule_one import SubmoduleOne
-from submodule_two import SubmoduleTwo
+from .submodule_one import SubmoduleOne
+from .submodule_two import SubmoduleTwo
 
 
 def main():
