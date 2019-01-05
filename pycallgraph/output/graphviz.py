@@ -207,7 +207,7 @@ class GraphvizOutput(Output):
     def generate_edges(self):
         output = []
 
-        with open("scipy_callgraph.txt", mode="w", encoding="utf-8") as wf:
+        with open("callgraph.txt", mode="w", encoding="utf-8") as wf:
             for edge in self.processor.edges():
                 wf.write("%s %s\n" % (edge.src_func, edge.dst_func))
                 attr = {

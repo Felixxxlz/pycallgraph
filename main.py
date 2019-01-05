@@ -6,7 +6,6 @@ from pycallgraph import PyCallGraph
 from pycallgraph.output import GraphvizOutput
 import numpy as np
 import astropy
-import scipy as sp
 
 
 def main():
@@ -14,8 +13,8 @@ def main():
 
     with PyCallGraph(output=graphviz):
         # np.test()
-        # sp.test('full')
-        astropy.test()
+        # astropy.test()
+        
 
 
 if __name__ == '__main__':
