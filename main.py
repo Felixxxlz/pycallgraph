@@ -16,16 +16,16 @@ import asdf
 
 def main():
     graphviz = GraphvizOutput()
-    graphviz.repo = 'asdf'
+    graphviz.repo = 'numba'
 
     with PyCallGraph(output=graphviz):
         # np.test()
         # astropy.test()
-        # numba.test()
+        numba.test()
         # obspy.core.run_tests(test_all_modules=True)
         # theano.test()
         # ccdproc.test()
-        asdf.test()
+        # asdf.test()
 
 
 if __name__ == '__main__':

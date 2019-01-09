@@ -208,9 +208,9 @@ class GraphvizOutput(Output):
     def generate_edges(self):
         output = []
 
-        with open("%s_callgraph.txt" % (self.repo, ), mode="w", encoding="utf-8") as wf:
+        with open("%s_trace.txt" % (self.repo, ), mode="w", encoding="utf-8") as wf:
             for edge in self.processor.edges():
-                wf.write("%s#%s\n" % (edge.src_func, edge.dst_func))
+                wf.write("%s$%s\n" % (edge.src_func, edge.dst_func))
                 attr = {
                     'color': self.edge_color_func(edge).rgba_web(),
                     'label': self.edge_label_func(edge),
