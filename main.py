@@ -1,31 +1,70 @@
-#!/usr/bin/env python
-'''
-This example demonstrates a simple recursive call.
-'''
 from pycallgraph import PyCallGraph
 from pycallgraph.output import GraphvizOutput
 import pytest
 import numpy as np
 import astropy
 import numba
-import obspy.core
 import theano
+import pandas
+import os
+import scipy as sp
+import time
+import matplotlib
+import tables
+import sympy
+import tox
+import IPython
+import Cython
+import networkx
+import statsmodels.api as sm
+import obspy
+import gammapy
+import h5py
+from skbio.test import pytestrunner
 import ccdproc
-import asdf
+import numexpr
 
 
 def main():
     graphviz = GraphvizOutput()
-    graphviz.repo = 'numba'
-
+    graphviz.repo = 'specutils'
+    start_time = time.time()
     with PyCallGraph(output=graphviz):
         # np.test()
         # astropy.test()
-        numba.test()
-        # obspy.core.run_tests(test_all_modules=True)
+        # numba.test()
         # theano.test()
+        # pandas.test()
+        # pytest.main(["-x", "/usr/local/lib/python3.6/dist-packages/sklearn"])
+        # sp.test()
+        # matplotlib.test()
+        # pytest.main(["-x", "/usr/local/lib/python3.6/dist-packages/joblib"])
+        # tables.test(heavy=True)
+        # sympy.utilities.runtests.test(subprocess=False)
+        # os.chdir('pyjulia')
+        # tox.cmdline()
+        # IPython.testing.test()
+        # os.chdir('scrapy')
+        # tox.cmdline()
+        # networkx.test()
+        # pytest.main(["-x", "/usr/local/lib/python3.6/dist-packages/bokeh"])
+        # sm.test()
+        # pytest.main(["-x", "/usr/local/lib/python3.6/dist-packages/nbconvert", "--pyargs", "nbconvert"])
+        # obspy.core.run_tests()
+        # gammapy.test()
+        # h5py.run_tests()
+        # pytest.main(["-x", "/usr/local/lib/python3.6/dist-packages/seaborn"])
+        # pytest.main(["-x", "/usr/local/lib/python3.6/dist-packages/sunpy"])
+        # pytest.main(["-x", "/usr/local/lib/python3.6/dist-packages/chainer"])
+        # pytest.main(["-x", "/usr/local/lib/python3.6/dist-packages/nilearn"])
+        # pytestrunner()
+        # pytest.main(["-x", "/usr/local/lib/python3.6/dist-packages/dask"])
         # ccdproc.test()
-        # asdf.test()
+        # pytest.main(["-x", "/usr/local/lib/python3.6/dist-packages/xarray"])
+        # pytest.main(["-x", "/usr/local/lib/python3.6/dist-packages/specutils"])
+        numexpr.test()
+    end_time = time.time()
+    print(end_time - start_time)
 
 
 if __name__ == '__main__':
