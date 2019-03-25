@@ -32,11 +32,12 @@ import brian2
 import astroplan
 import radio_beam
 import unittest
+import wcsaxes
 
 
 def main():
     graphviz = GraphvizOutput()
-    graphviz.repo = 'pyhacrf'
+    graphviz.repo = 'radio_beam'
     start_time = time.time()
     with PyCallGraph(output=graphviz):
         # np.test()
@@ -85,7 +86,7 @@ def main():
         # pytest.main(["-x", "/usr/local/lib/python3.6/dist-packages/naima"])
         # pytest.main(["-x", "/usr/local/lib/python3.6/dist-packages/pyamg"])
         # pytest.main(["-x", "/usr/local/lib/python3.6/dist-packages/patsy"])
-        # radio_beam.test()
+        radio_beam.test()
     end_time = time.time()
     print(end_time - start_time)
 
