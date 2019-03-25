@@ -23,11 +23,20 @@ import h5py
 from skbio.test import pytestrunner
 import ccdproc
 import numexpr
+import photutils
+import asdf
+import poppy
+import bottleneck as bn
+import pyregion
+import brian2
+import astroplan
+import radio_beam
+import unittest
 
 
 def main():
     graphviz = GraphvizOutput()
-    graphviz.repo = 'specutils'
+    graphviz.repo = 'pyhacrf'
     start_time = time.time()
     with PyCallGraph(output=graphviz):
         # np.test()
@@ -62,7 +71,21 @@ def main():
         # ccdproc.test()
         # pytest.main(["-x", "/usr/local/lib/python3.6/dist-packages/xarray"])
         # pytest.main(["-x", "/usr/local/lib/python3.6/dist-packages/specutils"])
-        numexpr.test()
+        # numexpr.test()
+        # photutils.test()
+        # asdf.test()
+        # poppy.test()
+        # pytest.main(["-x", "./xlrd"])
+        # pytest.main(["-x", "./astropy-helpers"])
+        # bn.test()
+        # pyregion.test()
+        # pytest.main(["-x", "/usr/local/lib/python3.6/dist-packages/oct2py"])
+        # brian2.test()
+        # astroplan.test()
+        # pytest.main(["-x", "/usr/local/lib/python3.6/dist-packages/naima"])
+        # pytest.main(["-x", "/usr/local/lib/python3.6/dist-packages/pyamg"])
+        # pytest.main(["-x", "/usr/local/lib/python3.6/dist-packages/patsy"])
+        # radio_beam.test()
     end_time = time.time()
     print(end_time - start_time)
 

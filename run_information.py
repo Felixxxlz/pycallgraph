@@ -2,7 +2,7 @@ import os
 import json
 
 
-repo = "numexpr"
+repo = "radio_beam"
 with open(os.path.join("callgraph", "%s_callgraph.json" % (repo, )), mode='r', encoding='utf-8') as rf:
     callgraph = json.load(rf)
 s = set()
@@ -18,8 +18,8 @@ for caller in callgraph:
 with open(os.path.join("traces", "%s_trace.txt" % (repo, )), mode="r", encoding="utf-8") as rf:
     lines = rf.readlines()
 
-# 1. 测试用例的caller需要在trace中统计（否则把对同个API的多个测试用例都去重了），`tests`目录下(joblib的测试目录为`test`, IPython的测试目录为testing, sympy的测试目录为runtests)，且模块名以test_开头，项目名repo开头
-tot_testcases = len([func for func in list(s) if ".tests." in func and "test_" in func and func.startswith(repo)])
+# 1. `tests`目录下(joblib的测试目录为`test`, IPython的测试目录为testing, sympy的测试目录为runtests, patsy没有测试目录)，且模块名以test_开头，项目名repo开头(xlrd这类直接在clone下来的repo中用pytest测试的，以test.开头)
+tot_testcases = len([func for func in list(s) if "tests." in func and "test_" in func and func.startswith(repo)])
 # tot_testcases = 0
 # for line in lines:
 #     line = line.strip().split("$")
