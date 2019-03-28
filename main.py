@@ -32,12 +32,11 @@ import brian2
 import astroplan
 import radio_beam
 import unittest
-import wcsaxes
 
 
 def main():
     graphviz = GraphvizOutput()
-    graphviz.repo = 'radio_beam'
+    graphviz.repo = 'nipype'
     start_time = time.time()
     with PyCallGraph(output=graphviz):
         # np.test()
@@ -51,11 +50,7 @@ def main():
         # pytest.main(["-x", "/usr/local/lib/python3.6/dist-packages/joblib"])
         # tables.test(heavy=True)
         # sympy.utilities.runtests.test(subprocess=False)
-        # os.chdir('pyjulia')
-        # tox.cmdline()
         # IPython.testing.test()
-        # os.chdir('scrapy')
-        # tox.cmdline()
         # networkx.test()
         # pytest.main(["-x", "/usr/local/lib/python3.6/dist-packages/bokeh"])
         # sm.test()
