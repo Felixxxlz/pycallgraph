@@ -32,11 +32,12 @@ import brian2
 import astroplan
 import radio_beam
 import unittest
+import tox
 
 
 def main():
     graphviz = GraphvizOutput()
-    graphviz.repo = 'nipype'
+    graphviz.repo = 'sphinx'
     start_time = time.time()
     with PyCallGraph(output=graphviz):
         # np.test()
@@ -81,7 +82,9 @@ def main():
         # pytest.main(["-x", "/usr/local/lib/python3.6/dist-packages/naima"])
         # pytest.main(["-x", "/usr/local/lib/python3.6/dist-packages/pyamg"])
         # pytest.main(["-x", "/usr/local/lib/python3.6/dist-packages/patsy"])
-        radio_beam.test()
+        # radio_beam.test()
+        # os.chdir("/home/ly/Desktop/REPOS/sphinx")
+        # tox.cmdline()
     end_time = time.time()
     print(end_time - start_time)
 
