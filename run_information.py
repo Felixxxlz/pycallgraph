@@ -2,7 +2,7 @@ import os
 import json
 
 
-repo = "pymc3"
+repo = "pandas_degreedays"
 with open(os.path.join("callgraph", "%s_callgraph.json" % (repo, )), mode='r', encoding='utf-8') as rf:
     callgraph = json.load(rf)
 s = set()
@@ -19,10 +19,10 @@ with open(os.path.join("traces", "%s_trace.txt" % (repo, )), mode="r", encoding=
     lines = rf.readlines()
 
 # 1. `tests`目录下(joblib的测试目录为`test`, IPython的测试目录为testing, sympy的测试目录为runtests, patsy没有测试目录, shared_ndarray, autoptim没有.tests.)，且模块名以test_开头，项目名repo开头(xlrd这类直接在clone下来的repo中用pytest测试的，以test.开头)
-tot_testcases = len([func for func in list(s) if "tests." in func and "test_" in func and func.startswith(repo)])
+# tot_testcases = len([func for func in list(s) if "test." in func and "test_" in func and func.startswith(repo)])
 # tot_testcases = len([func for func in list(s) if "test_" in func and func.startswith(repo)])
 # 用来统计放在tests放在src外面的测试用例数
-# tot_testcases = len([func for func in list(s) if (func.startswith("tests.") or func.startswith("test_")) and not func.startswith(repo)])
+tot_testcases = len([func for func in list(s) if (func.startswith("tests.") or func.startswith("test_")) and not func.startswith(repo)])
 # tot_testcases = 0
 # for line in lines:
 #     line = line.strip().split("$")

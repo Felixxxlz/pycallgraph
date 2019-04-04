@@ -1,35 +1,35 @@
 from pycallgraph import PyCallGraph
 from pycallgraph.output import GraphvizOutput
 import pytest
-import numpy as np
-import astropy
-import numba
-import theano
 import pandas
 import os
-import scipy as sp
 import time
-import matplotlib
-import tables
-import sympy
-import IPython
-import Cython
-import networkx
-import statsmodels.api as sm
-import obspy
-import gammapy
-import h5py
-from skbio.test import pytestrunner
-import ccdproc
-import numexpr
-import photutils
-import asdf
-import poppy
-import bottleneck as bn
-import pyregion
-import brian2
-import astroplan
-import radio_beam
+# import numpy as np
+# import astropy
+# import numba
+# import theano
+# import scipy as sp
+# import matplotlib
+# import tables
+# import sympy
+# import IPython
+# import Cython
+# import networkx
+# import statsmodels.api as sm
+# import obspy
+# import gammapy
+# import h5py
+# from skbio.test import pytestrunner
+# import ccdproc
+# import numexpr
+# import photutils
+# import asdf
+# import poppy
+# import bottleneck as bn
+# import pyregion
+# import brian2
+# import astroplan
+# import radio_beam
 
 
 def main(repo):
@@ -107,10 +107,37 @@ def main(repo):
         # pytest.main(["/usr/local/lib/python3.6/dist-packages/gwcs"])
         # pytest.main(["/usr/local/lib/python3.6/dist-packages/starfish"])
 
-        pytest.main(["./REPOS/cython-blis"])
+        # 19.04.03
+        # pytest.main(["./REPOS/UTide"])
+        # pytest.main(["./REPOS/pyik"])
+        # pytest.main(["./REPOS/npstreams"])
+        # pytest.main(["./REPOS/PyXRD"])
+        # pytest.main(["./REPOS/PVMismatch"])
+        # pytest.main(["./REPOS/spampy"])
+        # pytest.main(["./REPOS/Pyrr"])
+        # pytest.main(["/usr/local/lib/python3.6/dist-packages/nptdms"])
+        # pytest.main(["./REPOS/hienoi"])
+        # pytest.main(["./REPOS/molml"])
+        # pytest.main(["./REPOS/OOMMFTools"])
+        # pytest.main(["./REPOS/nnlib"])
+        # pytest.main(["./REPOS/kravatte"])
+        # pytest.main(["./REPOS/dicom-numpy"])
+
+        # 19.04.04
+        # pytest.main(["./REPOS/geometer"])
+        # pytest.main(["./REPOS/slugnet"])
+        # pytest.main(["./REPOS/zappy"])
+        # pytest.main(["./REPOS/gfmm"])
+        # pytest.main(["./REPOS/pyjson_tricks"])
+        # pytest.main(["./REPOS/pdepy"])
+        # pytest.main(["./REPOS/tidynamics"])
+        # pytest.main(["./REPOS/texpy"])
+        # pytest.main(["./REPOS/numpy-buffer"])
+        # pytest.main(["./REPOS/pandas_degreedays"])
+        pytest.main(["./REPOS/MobulaOP"])
     end_time = time.time()
     print(end_time - start_time)
 
 
 if __name__ == '__main__':
-    main('dill')
+    main("mobulaop")
