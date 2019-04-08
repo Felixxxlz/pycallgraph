@@ -1,12 +1,12 @@
 from pycallgraph import PyCallGraph
 from pycallgraph.output import GraphvizOutput
 import pytest
-import pandas
 import os
 import time
 # import numpy as np
 # import astropy
 # import numba
+# import pandas
 # import theano
 # import scipy as sp
 # import matplotlib
@@ -30,6 +30,9 @@ import time
 # import brian2
 # import astroplan
 # import radio_beam
+from cortix.examples.console_run import droplet_run as droplet 
+# import verde
+# import pooch
 
 
 def main(repo):
@@ -134,10 +137,21 @@ def main(repo):
         # pytest.main(["./REPOS/texpy"])
         # pytest.main(["./REPOS/numpy-buffer"])
         # pytest.main(["./REPOS/pandas_degreedays"])
-        pytest.main(["./REPOS/MobulaOP"])
+
+        # 19.04.08
+        # pytest.main(["./REPOS/pyshapes"])
+        # pytest.main(["./REPOS/feets"])
+        # droplet.run()
+        # verde.test()
+        # pooch.test()
+        # pytest.main(["./REPOS/psopy"])
+        # pytest.main(["./REPOS/randNLA"])
+        # pytest.main(["./REPOS/sdaopt"])
+        # pytest.main(["./REPOS/indi"])
+        pytest.main(["./REPOS/pytablewriter"])
     end_time = time.time()
     print(end_time - start_time)
 
 
 if __name__ == '__main__':
-    main("mobulaop")
+    main("pytablewriter")
