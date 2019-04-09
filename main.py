@@ -30,9 +30,12 @@ import time
 # import brian2
 # import astroplan
 # import radio_beam
-from cortix.examples.console_run import droplet_run as droplet 
 # import verde
 # import pooch
+# import astroimtools
+# import stginga
+# import synphot
+import pydl
 
 
 def main(repo):
@@ -148,10 +151,16 @@ def main(repo):
         # pytest.main(["./REPOS/randNLA"])
         # pytest.main(["./REPOS/sdaopt"])
         # pytest.main(["./REPOS/indi"])
-        pytest.main(["./REPOS/pytablewriter"])
+        # pytest.main(["./REPOS/pytablewriter"])
+        
+        # 19.04.09
+        # astroimtools.test()
+        # stginga.test()
+        # synphot.test()
+        pydl.test()
     end_time = time.time()
     print(end_time - start_time)
 
 
 if __name__ == '__main__':
-    main("pytablewriter")
+    main("pydl")
