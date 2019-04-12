@@ -2,8 +2,8 @@ import os
 import json
 
 
-repo = "astropy"
-test_dir = "test."
+repo = "finta"
+test_dir = "tests."
 with open(os.path.join("callgraph", "%s_callgraph.json" % (repo, )), mode='r', encoding='utf-8') as rf:
     callgraph = json.load(rf)
 s = set()

@@ -6,7 +6,7 @@ import json
 import csv
 
 
-topic_url = "https://api.github.com/search/repositories?&q=topic:astropy&order=desc&sort=stars&page=%d"
+topic_url = "https://api.github.com/search/repositories?&q=topic:pandas&order=desc&sort=stars&page=%d"
 headers = {
     "Accept": "application/vnd.github.mercy-preview+json"
 }
@@ -17,7 +17,7 @@ def craw_numpy_topic():
 
     for i in tqdm(range(1, 11)):
         resp = s.get(topic_url % (i, ), headers=headers, auth=("yannluo", "Ly941122"))
-        with open(os.path.join("astropy_topics", "%d.json" % (i, )), mode="w", encoding="utf-8") as wf:
+        with open(os.path.join("pandas_topics", "%d.json" % (i, )), mode="w", encoding="utf-8") as wf:
             wf.write(resp.text)
         if i % 20 == 0:
             time.sleep(60)
@@ -25,10 +25,10 @@ def craw_numpy_topic():
 
 def archive_repos():
     repos = []
-    files = os.listdir("astropy_topics")
+    files = os.listdir("pandas_topics")
     for i in range(1, 11):
         file = "%d.json" % (i, )
-        with open(os.path.join("astropy_topics", file), mode="r", encoding="utf-8") as rf:
+        with open(os.path.join("pandas_topics", file), mode="r", encoding="utf-8") as rf:
             json_content = json.load(rf)
             repos.extend([item["full_name"] for item in json_content["items"]])
     repos = list(set(repos))

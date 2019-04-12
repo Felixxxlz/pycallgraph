@@ -157,10 +157,28 @@ def main(repo):
         # astroimtools.test()
         # stginga.test()
         # synphot.test()
-        pydl.test()
+        # pydl.test()
+
+        # 19.04.12
+        # pytest.main(["./REPOS/prince"])
+        # pytest.main(["./REPOS/Coinsta"])
+        # pytest.main(["/usr/local/lib/python3.6/dist-packages/iexfinance"])
+        # pytest.main(["./REPOS/kodiak"])
+        # pytest.main(["./REPOS/phildb"])
+        # pytest.main(["./REPOS/datacompy"])
+        # pytest.main(["./REPOS/espandas"])
+        # pytest.main(["./REPOS/deepgraph"])
+        # pytest.main(["./REPOS/lens"])
+        # pytest.main(["/usr/local/lib/python3.6/dist-packages/plydata"])
+        # pytest.main(["/usr/local/lib/python3.6/dist-packages/ibis"])
+        # pytest.main(["./REPOS/validada"])
+        # pytest.main(["./REPOS/partridge"])
+        # pytest.main(["./REPOS/meza"])
+        pytest.main(["./REPOS/finta"])
+
     end_time = time.time()
     print(end_time - start_time)
 
 
 if __name__ == '__main__':
-    main("pydl")
+    main("finta")
