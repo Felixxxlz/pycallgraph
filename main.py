@@ -115,7 +115,7 @@ def main(repo):
 
         # 19.04.03
         # pytest.main(["./REPOS/UTide"])
-        # pytest.main(["./REPOS/pyik"])
+        pytest.main(["./REPOS/pyik"])
         # pytest.main(["./REPOS/npstreams"])
         # pytest.main(["./REPOS/PyXRD"])
         # pytest.main(["./REPOS/PVMismatch"])
@@ -174,11 +174,11 @@ def main(repo):
         # pytest.main(["./REPOS/validada"])
         # pytest.main(["./REPOS/partridge"])
         # pytest.main(["./REPOS/meza"])
-        pytest.main(["./REPOS/finta"])
+        # pytest.main(["./REPOS/finta"])
 
     end_time = time.time()
     print(end_time - start_time)
 
 
 if __name__ == '__main__':
-    main("finta")
+    main("pyik")
