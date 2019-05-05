@@ -31,7 +31,6 @@ import brian2
 import astroplan
 import radio_beam
 import verde
-import pooch
 import astroimtools
 import stginga
 import synphot
