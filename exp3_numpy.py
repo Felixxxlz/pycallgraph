@@ -126,11 +126,19 @@ def main():
     # gammapy.test()
     # astropy.test()
     # matplotlib.test()
+    numpy_version = ["9ae4f9bae9344ee0f1ca4d5767e49c196d534efc"][-1][:7]
+    try:
+        os.makedirs(os.path.join("test_logs", "numpy", numpy_version))
+    except:
+        pass
     downstream_test_pyfiles = os.listdir("test_numpy")
-    for downstream_test_pyfile in tqdm.tqdm(downstream_test_pyfiles):
+    for downstream_test_pyfile in tqdm.tqdm(downstream_test_pyfiles[46:]):
+        downstream_name = "_".join(downstream_test_pyfile.split('.')[0].split("_")[1:])
+        if downstream_name == "alphalens":
+            continue
         pyfile_path = os.path.join("test_numpy", downstream_test_pyfile)
-        with open(os.path.join("run_infos", "numpy", \
-            "run_info_" + "_".join(downstream_test_pyfile.split('.')[0].split("_")[1:]) + ".txt"), mode="w") as wf:
+        with open(os.path.join("test_logs", "numpy", numpy_version, \
+            "test_log_" + downstream_name + ".txt"), mode="w") as wf:
             p = Popen(["python3", pyfile_path], stdout=wf, stderr=wf)
             p.wait()
 
