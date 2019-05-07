@@ -132,9 +132,12 @@ def main():
     except:
         pass
     downstream_test_pyfiles = os.listdir("test_numpy")
-    for downstream_test_pyfile in tqdm.tqdm(downstream_test_pyfiles[46:]):
+    for downstream_test_pyfile in tqdm.tqdm(downstream_test_pyfiles[51:]):
         downstream_name = "_".join(downstream_test_pyfile.split('.')[0].split("_")[1:])
+        print(downstream_name)
         if downstream_name == "alphalens":
+            continue
+        if downstream_name == "joblib":
             continue
         pyfile_path = os.path.join("test_numpy", downstream_test_pyfile)
         with open(os.path.join("test_logs", "numpy", numpy_version, \
