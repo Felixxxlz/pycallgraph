@@ -135,7 +135,6 @@ def main():
         reader = csv.reader(rf)
         next(reader)
         for row in reader:
-            print(bool(int(row[4])))
             if int(row[4]):
                 ok.add(row[1])
     numpy_version = numpy_version[:7]
