@@ -127,21 +127,23 @@ def main():
     # gammapy.test()
     # astropy.test()
     # matplotlib.test()
-    numpy_version = ["9ae4f9bae9344ee0f1ca4d5767e49c196d534efc", "c4a840ed97f67cfdc7c5d8a04512cdc86098dff0"][-1]
+    numpy_version = ["9ae4f9bae9344ee0f1ca4d5767e49c196d534efc", "c4a840ed97f67cfdc7c5d8a04512cdc86098dff0",
+    "a72f061ede7cf2058829668a4f5d110dec265f1c"][-1]
     downstream_test_pyfiles = os.listdir("test_numpy")
     ok = set()
     with open(os.path.join("results", "numpy", numpy_version + ".csv"), encoding="gbk") as rf:
         reader = csv.reader(rf)
         next(reader)
         for row in reader:
-            if row[4]:
+            print(bool(int(row[4])))
+            if int(row[4]):
                 ok.add(row[1])
     numpy_version = numpy_version[:7]
     try:
         os.makedirs(os.path.join("test_logs", "numpy", numpy_version))
     except:
         pass
-    for downstream_test_pyfile in tqdm.tqdm(downstream_test_pyfiles[27:]):
+    for downstream_test_pyfile in tqdm.tqdm(downstream_test_pyfiles):
         downstream_name = "_".join(downstream_test_pyfile.split('.')[0].split("_")[1:])
         if downstream_name not in ok:
             continue
