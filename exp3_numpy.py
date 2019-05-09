@@ -127,39 +127,46 @@ def main():
     # gammapy.test()
     # astropy.test()
     # matplotlib.test()
-    numpy_version = ["9ae4f9bae9344ee0f1ca4d5767e49c196d534efc", "c4a840ed97f67cfdc7c5d8a04512cdc86098dff0",
-    "a72f061ede7cf2058829668a4f5d110dec265f1c"][-1]
-    downstream_test_pyfiles = os.listdir("test_numpy")
-    ok = set()
-    with open(os.path.join("results", "numpy", numpy_version + ".csv"), encoding="gbk") as rf:
-        reader = csv.reader(rf)
-        next(reader)
-        for row in reader:
-            if int(row[4]):
-                ok.add(row[1])
-    numpy_version = numpy_version[:7]
-    try:
-        os.makedirs(os.path.join("test_logs", "numpy", numpy_version))
-    except:
-        pass
-    for downstream_test_pyfile in tqdm.tqdm(downstream_test_pyfiles):
-        downstream_name = "_".join(downstream_test_pyfile.split('.')[0].split("_")[1:])
-        if downstream_name not in ok:
-            continue
-        if downstream_name == "alphalens":
-            continue
-        if downstream_name == "joblib":
-            continue
-        if downstream_name == "dask":
-            continue
-        if downstream_name == "numpy_buffer":
-            continue
-        print(downstream_name)
-        pyfile_path = os.path.join("test_numpy", downstream_test_pyfile)
-        with open(os.path.join("test_logs", "numpy", numpy_version, \
-            "test_log_" + downstream_name + ".txt"), mode="w") as wf:
-            p = Popen(["python3", pyfile_path], stdout=wf, stderr=wf)
-            p.wait()
+    numpy_versions = ["9ae4f9bae9344ee0f1ca4d5767e49c196d534efc", "c4a840ed97f67cfdc7c5d8a04512cdc86098dff0",
+    "a72f061ede7cf2058829668a4f5d110dec265f1c", "2f2dfa19839d69a20713b2fe05ca1ca35f6454a7", 
+    "a090e46b9e3b5046f08e46b08df103d00985e47c", "25b5273834c73bb278a4741aad5ade4ad705f209",
+    "ca5658bb0e63030011d8a0f30815b34f4dc6dc8a", "ba734f3160419771f82bb1f45c60d4871f2efd72", 
+    "5e9c419a6d41eb9d544b6d87dd621ad5b346a0fa", "d89c4c7e7850578e5ee61e3e09abd86318906975",
+    "632afad440193271535a33a89bc3e19c3ecc291c", "0c3c04ebc1f9b038ebc75b1dc0b46437accb3e7f",
+    "81f0ddac64919e503beeea2c1812b36a607de55d", "d6dcaedad22f5842e28179351238b4847e74d5a9",
+    "e6147b9bf580361f2f74ac72003f81e957587528", "f297d317f9d2355228fb3a265e9ff3c69e37b1e2"][3:]
+    for numpy_version in numpy_versions:
+        downstream_test_pyfiles = os.listdir("test_numpy")
+        ok = set()
+        with open(os.path.join("results", "numpy", numpy_version + ".csv"), encoding="gbk") as rf:
+            reader = csv.reader(rf)
+            next(reader)
+            for row in reader:
+                if int(row[4]):
+                    ok.add(row[1])
+        numpy_version = numpy_version[:7]
+        try:
+            os.makedirs(os.path.join("test_logs", "numpy", numpy_version))
+        except:
+            pass
+        for downstream_test_pyfile in tqdm.tqdm(downstream_test_pyfiles):
+            downstream_name = "_".join(downstream_test_pyfile.split('.')[0].split("_")[1:])
+            if downstream_name not in ok:
+                continue
+            if downstream_name == "alphalens":
+                continue
+            if downstream_name == "joblib":
+                continue
+            if downstream_name == "dask":
+                continue
+            if downstream_name == "numpy_buffer":
+                continue
+            print(downstream_name)
+            pyfile_path = os.path.join("test_numpy", downstream_test_pyfile)
+            with open(os.path.join("test_logs", "numpy", numpy_version, \
+                "test_log_" + downstream_name + ".txt"), mode="w") as wf:
+                p = Popen(["python3", pyfile_path], stdout=wf, stderr=wf)
+                p.wait()
 
 
 if __name__ == '__main__':
