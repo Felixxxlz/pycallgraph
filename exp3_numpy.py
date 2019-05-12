@@ -138,14 +138,14 @@ def main():
     "81f0ddac64919e503beeea2c1812b36a607de55d", "d6dcaedad22f5842e28179351238b4847e74d5a9",
     "e6147b9bf580361f2f74ac72003f81e957587528", "f297d317f9d2355228fb3a265e9ff3c69e37b1e2"][6:] # 别忘记安装对应版本的numpy环境
     for numpy_version in numpy_versions:
-        os.chdir(os.path.join("..", "REPOS", "numpy"))
-        p = Popen(["git", "checkout", "master"])
-        p.communicate()
-        p = Popen(["git", "checkout", numpy_version])
-        p.communicate()
-        p = Popen("sudo -S pip3 install .", shell=True, stdin=PIPE)
-        p.communicate(bytes("Ly941122" + "\n", encoding="utf-8"))
-        os.chdir(os.path.join("..", "..", "pycallgraph"))
+        # os.chdir(os.path.join("..", "REPOS", "numpy"))
+        # p = Popen(["git", "checkout", "master"])
+        # p.communicate()
+        # p = Popen(["git", "checkout", numpy_version])
+        # p.communicate()
+        # p = Popen("sudo -S pip3 install .", shell=True, stdin=PIPE)
+        # p.communicate(bytes("Ly941122" + "\n", encoding="utf-8"))
+        # os.chdir(os.path.join("..", "..", "pycallgraph"))
 
         downstream_test_pyfiles = os.listdir("test_numpy")
         ok = set()
@@ -179,7 +179,10 @@ def main():
             with open(os.path.join("test_logs", "numpy", numpy_version, \
                 "test_log_" + downstream_name + ".txt"), mode="w") as wf:
                 p = Popen(["python3", pyfile_path], stdout=wf, stderr=wf)
-                p.communicate()
+                try:
+                    p.communicate(timeout=10800)
+                except:
+                    p.kill()
 
 
 if __name__ == '__main__':
