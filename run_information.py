@@ -2,7 +2,7 @@ import os
 import json
 
 
-repo = "scikitplot"
+repo = "sklearn_lvq"
 test_dir = "tests."
 with open(os.path.join("callgraph", "method_level", "%s_callgraph.json" % (repo, )), mode='r', encoding='utf-8') as rf:
     callgraph = json.load(rf)

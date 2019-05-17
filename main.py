@@ -197,11 +197,27 @@ def main(repo):
         # pytest.main(["./REPOS/auto_ml"])
         # pytest.main(["./REPOS/scikit-optimize"])
         # pytest.main(["/usr/local/lib/python3.6/dist-packages/xcessiv"])
-        pytest.main(["./REPOS/scikit-plot"])
+        # pytest.main(["./REPOS/scikit-plot"])
+
+        # 19.05.17
+        # pytest.main(["./REPOS/onnxmltools"])
+        # pytest.main(["./REPOS/seqlearn"])
+        # pytest.main(["/usr/local/lib/python3.6/dist-packages/pystruct"])
+        # pytest.main(["./REPOS/kmodes"])
+        # pytest.main(["/usr/local/lib/python3.6/dist-packages/hdbscan"])
+        # pytest.main(["/usr/local/lib/python3.6/dist-packages/gplearn"])
+        # pytest.main(["./REPOS/spherecluster"])
+        # pytest.main(["./REPOS/skpro"])
+        # pytest.main(["./REPOS/profanity-check"])
+        # pytest.main(["./REPOS/pailab"])
+        # pytest.main(["./REPOS/chainer_sklearn"])
+        # pytest.main(["./REPOS/sklearn-evaluation"])
+        # pytest.main(["./REPOS/sklearn2"])
+        pytest.main(["./REPOS/sklearn_lvq"])
 
     end_time = time.time()
     print(end_time - start_time)
 
 
 if __name__ == '__main__':
-    main("scikitplot")
+    main("sklearn_lvq")
