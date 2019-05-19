@@ -145,7 +145,7 @@ def main():
         p.communicate()
         p = Popen(["git", "checkout", numpy_version])
         p.communicate()
-        p = Popen("sudo -S pip3 install . --no-cache-dir", shell=True, stdin=PIPE)
+        p = Popen("sudo -S pip3 install .", shell=True, stdin=PIPE)
         p.communicate(bytes("Ly941122" + "\n", encoding="utf-8"))
         os.chdir(os.path.join("..", "..", "pycallgraph"))
 
