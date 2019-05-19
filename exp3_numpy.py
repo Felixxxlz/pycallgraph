@@ -136,7 +136,9 @@ def main():
     "5e9c419a6d41eb9d544b6d87dd621ad5b346a0fa", "d89c4c7e7850578e5ee61e3e09abd86318906975",
     "632afad440193271535a33a89bc3e19c3ecc291c", "0c3c04ebc1f9b038ebc75b1dc0b46437accb3e7f",
     "81f0ddac64919e503beeea2c1812b36a607de55d", "d6dcaedad22f5842e28179351238b4847e74d5a9",
-    "e6147b9bf580361f2f74ac72003f81e957587528", "f297d317f9d2355228fb3a265e9ff3c69e37b1e2"] # 别忘记安装对应版本的numpy环境
+    "e6147b9bf580361f2f74ac72003f81e957587528", "f297d317f9d2355228fb3a265e9ff3c69e37b1e2",
+    "4056847a275117a97b47fb1f88aafa2b58982d93", "dde92f126643ae0c6c33d584c6a620b06e208134",
+    "f12758396ad4a9dbae7d656b25fe189f75224a6d"][-3:] # 别忘记安装对应版本的numpy环境
     for numpy_version in numpy_versions:
         os.chdir(os.path.join("..", "REPOS", "numpy"))
         p = Popen(["git", "checkout", "master"])
@@ -155,8 +157,6 @@ def main():
             for row in reader:
                 if int(row[4]):
                     ok.add(row[1])
-        for item in sorted(ok):
-            print(item)
         numpy_version = numpy_version[:7]
         try:
             os.makedirs(os.path.join("test_logs", "numpy", numpy_version))
