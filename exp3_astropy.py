@@ -6,28 +6,28 @@ import subprocess
 
 
 def main():
-    scipy_versions = ['0d6506aee44ee6d223fb6dea13ed06de4a935afe', 'e28b999aed912641acebc4bf88637a12b83fa885', 'f4f3c0ed831cc34824bffb0bc3c1f65e3ee4ddab', 'bc124d0f9c0b37c29bb4df2ea71b463a41e469ec', '429ce001c85a9bdb8b1b65eb0c38ba84917055f4', '54e1727a603f7698957f43ea2cd6236fe2530615', '4dd1792909bd725ff057ceb00f8dfabe9eab1c02']
-    for scipy_version in scipy_versions:
-        os.chdir(os.path.join("..", "REPOS", "scipy"))
+    astropy_versions = ['c73640ba0da2807dc467d76de21b51fbbc1ca3c0', '2394af9f65825d48961457636fe8b5d40d8ad9b9', '2ce0412596517cc6cee49541495208b3a5e66531', '5cec111b9595ff6ce097a9381b8f804d202ba8c2', 'e3b9fbecdc9ae34db5a88ccfcb9c067352886391', '89bb7a1e71eda4e4d6baece0460206a7f062a93c', 'b6be4e54ffb60df5088c28c0dcc9c283b7201c4d', 'e9a32561c9e828f93dfab71138e977a147e0e442', '4dfef4bc64be527ae63a099c2c3d7ce0e2b0a36f']
+    for astropy_version in astropy_versions:
+        os.chdir(os.path.join("..", "REPOS", "astropy"))
         p = Popen(["git", "checkout", "master"])
         p.communicate()
-        p = Popen(["git", "checkout", scipy_version])
+        p = Popen(["git", "checkout", astropy_version])
         p.communicate()
         p = Popen("sudo -S -H pip3 install . --no-cache-dir", shell=True, stdin=PIPE)
         p.communicate(bytes("Ly941122" + "\n", encoding="utf-8"))
         os.chdir(os.path.join("..", "..", "pycallgraph"))
 
-        downstream_test_pyfiles = os.listdir("test_scipy")
+        downstream_test_pyfiles = os.listdir("test_astropy")
         ok = set()
-        with open(os.path.join("results", "scipy", scipy_version + ".csv"), encoding="gbk") as rf:
+        with open(os.path.join("results", "astropy", astropy_version + ".csv"), encoding="gbk") as rf:
             reader = csv.reader(rf)
             next(reader)
             for row in reader:
                 if int(row[4]):
                     ok.add(row[1])
-        scipy_version = scipy_version[:7]
+        astropy_version = astropy_version[:7]
         try:
-            os.makedirs(os.path.join("test_logs", "scipy", scipy_version))
+            os.makedirs(os.path.join("test_logs", "astropy", astropy_version))
         except:
             pass
         for downstream_test_pyfile in tqdm.tqdm(downstream_test_pyfiles):
@@ -45,8 +45,8 @@ def main():
             if downstream_name == "indi":
                 continue
             print(downstream_name)
-            pyfile_path = os.path.join("test_scipy", downstream_test_pyfile)
-            with open(os.path.join("test_logs", "scipy", scipy_version, \
+            pyfile_path = os.path.join("test_astropy", downstream_test_pyfile)
+            with open(os.path.join("test_logs", "astropy", astropy_version, \
                 "test_log_" + downstream_name + ".txt"), mode="w") as wf:
                 p = Popen(["python3", pyfile_path], stdout=wf, stderr=wf)
                 try:
