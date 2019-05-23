@@ -47,7 +47,7 @@ def main():
             print(downstream_name)
             pyfile_path = os.path.join("test_scipy", downstream_test_pyfile)
             with open(os.path.join("test_logs", "scipy", scipy_version, \
-                "test_log_" + downstream_name + ".txt"), mode="w") as wf:
+                downstream_name + ".log"), mode="w") as wf:
                 p = Popen(["python3", pyfile_path], stdout=wf, stderr=wf)
                 try:
                     p.communicate(timeout=12600)
