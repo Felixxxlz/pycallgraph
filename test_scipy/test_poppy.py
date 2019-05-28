@@ -1,2 +1,2 @@
-import pytest
+import poppy
 poppy.test()
