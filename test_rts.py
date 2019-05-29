@@ -107,7 +107,7 @@ def main():
     pre_sha = ''
     for upstream, sha, downstream, files in tqdm.tqdm(data):
 
-        if downstream in ("alphalens", "joblib", "numpy_buffer", "indi", "nilearn"):
+        if downstream in ("alphalens", "joblib", "numpy_buffer", "indi", "nilearn", "astroplan", "sympy", "tables", "theano", "pymc3", "numba"):
             continue
 
         if not len(files):
@@ -121,45 +121,57 @@ def main():
         
         g = test_driver_generator(downstream)
         
-        log_dir = os.path.join("test_logs", upstream, sha)
+        log_dir = os.path.join("test_logs", upstream, sha, downstream)
         try:
             os.makedirs(log_dir)
         except:
             pass
-        log_file = open(os.path.join(log_dir, downstream + ".log"), mode="w")
         total_cost = 0
         if downstream in ("bottleneck", "brian2", "gammapy", "h5py", "networkx", "numba", "numexpr", "obspy", "pandas",
                         "skbio", "tables", "theano", "verde"):
             # test all
             test_driver_code = g.generate(files, downstream)
+            log_file = open(os.path.join(log_dir, downstream + ".log"), mode="w")
             cost = test_code(test_driver_code, log_file)
+            log_file.close()
             total_cost = cost
-            conn.execute("insert or replace into ? values (?,?,?,?,?,?)", (upstream, upstream, sha, downstream, "", "", cost))
+            conn.execute("insert or replace into %s values (?,?,?,?,?,?)" % (upstream, ), (upstream, sha, downstream, "", "", cost))
         elif downstream in ("asdf", "astroimtools", "astroplan", "astropy", "ccdproc", "photutils", "poppy", "pydl",
         "pyregion", "radio_beam", "stginga", "synphot"):
             # test modules
             for f in files:
                 test_driver_code = g.generate([f], downstream)
+                name = "_".join(f.split("."))
+                if not name:
+                    name = downstream
+                log_file = open(os.path.join(log_dir, name + ".log"), mode="w")
                 cost = test_code(test_driver_code, log_file)
+                log_file.close()
                 total_cost += cost
-                conn.execute("insert or replace into ? values (?,?,?,?,?,?)", (upstream, upstream, sha, downstream, "", f, cost))
+                conn.execute("insert or replace into %s values (?,?,?,?,?,?)" % (upstream, ), (upstream, sha, downstream, "", f, cost))
         elif downstream in ("numpy", "scipy", "statsmodels"):
             # test modules
             for f in files:
                 test_driver_code = g.generate([f], downstream)
+                name = "_".join(f.split("."))
+                if not name:
+                    name = downstream
+                log_file = open(os.path.join(log_dir, name + ".log"), mode="w")
                 cost = test_code(test_driver_code, log_file)
+                log_file.close()
                 total_cost += cost
-                conn.execute("insert or replace into ? values (?,?,?,?,?,?)", (upstream, upstream, sha, downstream, "", f, cost))
+                conn.execute("insert or replace into %s values (?,?,?,?,?,?)" % (upstream, ), (upstream, sha, downstream, "", f, cost))
         else:
             # test files 
             for f in files:
                 test_driver_code = g.generate([f], downstream)
+                log_file = open(os.path.join(log_dir, "_".join(f.split(".")) + ".log"), mode="w")
                 cost = test_code(test_driver_code, log_file)
+                log_file.close()
                 total_cost += cost
-                conn.execute("insert or replace into ? values (?,?,?,?,?,?)", (upstream, upstream, sha, downstream, f, "", cost))
-        conn.execute("insert or replace into ? values (?,?,?,?,?,?)", (upstream, upstream, sha, downstream, "", "", total_cost))
+                conn.execute("insert or replace into %s values (?,?,?,?,?,?)" % (upstream, ), (upstream, sha, downstream, f, "", cost))
+        conn.execute("insert or replace into %s values (?,?,?,?,?,?)" % (upstream, ), (upstream, sha, downstream, "", "", total_cost))
         conn.commit()
-        log_file.close()
     conn.close()
 
 
