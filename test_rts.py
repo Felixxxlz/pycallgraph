@@ -59,11 +59,9 @@ def read_data():
     return ret
 
 
-def test_code(code: str, log_file):
+def test_code(code_path: str, log_file):
     start_time = time.time()
-    with open("tmp.py", "w") as wf:
-        wf.write(code)
-    p = subprocess.Popen(["python3", "tmp.py"], stdout=log_file, stderr=log_file)
+    p = subprocess.Popen(["python3", code_path], stdout=log_file, stderr=log_file)
     try:
         p.communicate(timeout=12600)
     except:
@@ -127,12 +125,21 @@ def main():
         except:
             pass
         total_cost = 0
+        test_driver_dir = os.path.join("test_drivers", upstream, sha, downstream)
+        try:
+            os.makedirs(test_driver_dir)
+        except:
+            pass
         if downstream in ("bottleneck", "brian2", "gammapy", "h5py", "networkx", "numba", "numexpr", "obspy", "pandas",
                         "skbio", "tables", "theano", "verde"):
             # test all
             test_driver_code = g.generate(files, downstream)
+            test_driver_code_path = os.path.join(test_driver_dir, downstream + ".py")
+            with open(test_driver_code_path, mode="w") as wf:
+                wf.write(test_driver_code)
+            
             log_file = open(os.path.join(log_dir, downstream + ".log"), mode="w")
-            cost = test_code(test_driver_code, log_file)
+            cost = test_code(test_driver_code_path, log_file)
             log_file.close()
             total_cost = cost
             conn.execute("insert or replace into %s values (?,?,?,?,?,?)" % (upstream, ), (upstream, sha, downstream, "", "", cost))
@@ -144,8 +151,11 @@ def main():
                 name = "_".join(f.split("."))
                 if not name:
                     name = downstream
+                test_driver_code_path = os.path.join(test_driver_dir, name + ".py")
+                with open(test_driver_code_path, mode="w") as wf:
+                    wf.write(test_driver_code)
                 log_file = open(os.path.join(log_dir, name + ".log"), mode="w")
-                cost = test_code(test_driver_code, log_file)
+                cost = test_code(test_driver_code_path, log_file)
                 log_file.close()
                 total_cost += cost
                 conn.execute("insert or replace into %s values (?,?,?,?,?,?)" % (upstream, ), (upstream, sha, downstream, "", f, cost))
@@ -156,8 +166,11 @@ def main():
                 name = "_".join(f.split("."))
                 if not name:
                     name = downstream
+                test_driver_code_path = os.path.join(test_driver_dir, name + ".py")
+                with open(test_driver_code_path, mode="w") as wf:
+                    wf.write(test_driver_code)
                 log_file = open(os.path.join(log_dir, name + ".log"), mode="w")
-                cost = test_code(test_driver_code, log_file)
+                cost = test_code(test_driver_code_path, log_file)
                 log_file.close()
                 total_cost += cost
                 conn.execute("insert or replace into %s values (?,?,?,?,?,?)" % (upstream, ), (upstream, sha, downstream, "", f, cost))
@@ -165,8 +178,11 @@ def main():
             # test files 
             for f in files:
                 test_driver_code = g.generate([f], downstream)
+                test_driver_code_path = os.path.join(test_driver_dir, "_".join(f.split(".")) + ".py")
+                with open(test_driver_code_path, mode="w") as wf:
+                    wf.write(test_driver_code)
                 log_file = open(os.path.join(log_dir, "_".join(f.split(".")) + ".log"), mode="w")
-                cost = test_code(test_driver_code, log_file)
+                cost = test_code(test_driver_code_path, log_file)
                 log_file.close()
                 total_cost += cost
                 conn.execute("insert or replace into %s values (?,?,?,?,?,?)" % (upstream, ), (upstream, sha, downstream, f, "", cost))
