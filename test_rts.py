@@ -45,35 +45,6 @@ def install_upstream(upstream, sha):
     os.chdir(os.path.join("..", ".."))
 
 
-def run_regression(upstream, sha):
-    # install environment
-    install_upstream(upstream, sha)
-
-    # clean cache
-    try:
-        p = subprocess.Popen(' '.join(["find", "repos", "-name", "\"__pycache__\"", "|", "xargs", "rm", "-r"]), shell=True)
-        p.communicate()
-    except:
-        pass
-
-    # run testsuits
-    try:
-        os.makedirs(os.path.join("test_logs", upstream, sha))
-    except:
-        pass
-    test_drivers_dir = os.path.join("test_drivers", upstream, sha)
-    downstream_test_drivers = os.listdir(test_drivers_dir)
-    for downstream_test_driver in tqdm.tqdm(downstream_test_drivers):
-        downstream = "_".join(downstream_test_driver.split(".")[0].split("_")[1:])
-        pyfile_path = os.path.join(test_drivers_dir, downstream_test_driver)
-        with open(os.path.join("test_logs", upstream, sha, downstream + ".log"), mode="w") as wf:
-            p = subprocess.Popen(["python3", pyfile_path], stdout=wf, stderr=wf)
-            try:
-                p.communicate(timeout=10800)
-            except:
-                p.kill()
-
-
 def test_code(code_path: str, log_file):
     start_time = time.time()
     p = subprocess.Popen(["python3", code_path], stdout=log_file, stderr=log_file)
