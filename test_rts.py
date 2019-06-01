@@ -5,6 +5,33 @@ import sqlite3
 import time
 
 
+def init_environment():
+    p = Popen("sudo -S pip3 uninstall numpy", shell=True, stdin=PIPE)
+    p.communicate(bytes("Ly941122\ny\n", encoding="utf-8"))
+    p = Popen("sudo -S pip3 install numpy", shell=True, stdin=PIPE)
+    p.communicate(bytes("Ly941122" + "\n", encoding="utf-8"))
+
+    p = Popen("sudo -S pip3 uninstall scipy", shell=True, stdin=PIPE)
+    p.communicate(bytes("Ly941122\ny\n", encoding="utf-8"))
+    p = Popen("sudo -S pip3 install scipy", shell=True, stdin=PIPE)
+    p.communicate(bytes("Ly941122" + "\n", encoding="utf-8"))
+
+    p = Popen("sudo -S pip3 uninstall pandas", shell=True, stdin=PIPE)
+    p.communicate(bytes("Ly941122\ny\n", encoding="utf-8"))
+    p = Popen("sudo -S pip3 install pandas", shell=True, stdin=PIPE)
+    p.communicate(bytes("Ly941122" + "\n", encoding="utf-8"))
+
+    p = Popen("sudo -S pip3 uninstall astropy", shell=True, stdin=PIPE)
+    p.communicate(bytes("Ly941122\ny\n", encoding="utf-8"))
+    p = Popen("sudo -S pip3 install astropy", shell=True, stdin=PIPE)
+    p.communicate(bytes("Ly941122" + "\n", encoding="utf-8"))
+
+    p = Popen("sudo -S pip3 uninstall scikit-learn", shell=True, stdin=PIPE)
+    p.communicate(bytes("Ly941122\ny\n", encoding="utf-8"))
+    p = Popen("sudo -S pip3 install scikit-learn", shell=True, stdin=PIPE)
+    p.communicate(bytes("Ly941122" + "\n", encoding="utf-8"))
+
+
 def install_upstream(upstream, sha):
     if upstream == "sklearn":
         upstream = "scikit-learn"
@@ -42,21 +69,9 @@ def run_regression(upstream, sha):
         with open(os.path.join("test_logs", upstream, sha, downstream + ".log"), mode="w") as wf:
             p = subprocess.Popen(["python3", pyfile_path], stdout=wf, stderr=wf)
             try:
-                p.communicate(timeout=12600)
+                p.communicate(timeout=10800)
             except:
                 p.kill()
-
-
-def read_data():
-    with open("data.txt") as rf:
-        lines = rf.readlines()
-    lines = [line.strip().split() for line in lines]
-    ret = []
-    for line in lines:
-        tmp = line[:3]
-        tmp.append(tuple(line[3:]))
-        ret.append(tuple(tmp))
-    return ret
 
 
 def test_code(code_path: str, log_file):
@@ -99,96 +114,102 @@ def test_driver_generator(downstream):
 
 
 def main():
-    data = read_data()
-    conn = sqlite3.connect('test_info.db')
-    pre_upstream = ''
-    pre_sha = ''
-    for upstream, sha, downstream, files in tqdm.tqdm(data):
+    upstreams = ("numpy", "scipy", "astropy", "pandas", "sklearn")
+    with open("exp3_config_related_downstreams.json", mode="r") as rf:
+        config = json.load(rf)
+    for upstream in upstreams:
+        init_environment()
+        versions = [sha for sha in config[upstream]]
+        conn = sqlite3.connect('test_logs/databases/test_info.db')
+        for version in versions:
+            try:
+                p = Popen("find repos -name \"pycache\" | xargs rm -r", shell=True)
+                p.communicate()
+            except:
+                pass
+            install_upstream(upstream, version)
+            for item in config[upstream][version]:
+                downstream = item["downstream"]
+                files = item["files"]
 
-        if downstream in ("alphalens", "joblib", "numpy_buffer", "indi", "nilearn", "astroplan", "sympy", "tables", "theano", "pymc3", "numba"):
-            continue
+                if downstream in ("alphalens", "joblib", "numpy_buffer", "indi", "nilearn", "astroplan", "sympy", "tables", "theano", "pymc3", "numba"):
+                    continue
 
-        if not len(files):
-            files = [""]
-
-        # install environment
-        if pre_upstream != upstream or pre_sha != sha:
-            pre_upstream = upstream
-            pre_sha = sha
-            install_upstream(upstream, sha)
-        
-        g = test_driver_generator(downstream)
-        
-        log_dir = os.path.join("test_logs", upstream, sha, downstream)
-        try:
-            os.makedirs(log_dir)
-        except:
-            pass
-        total_cost = 0
-        test_driver_dir = os.path.join("test_drivers", upstream, sha, downstream)
-        try:
-            os.makedirs(test_driver_dir)
-        except:
-            pass
-        if downstream in ("bottleneck", "brian2", "gammapy", "h5py", "networkx", "numba", "numexpr", "obspy", "pandas",
-                        "skbio", "tables", "theano", "verde"):
-            # test all
-            test_driver_code = g.generate(files, downstream)
-            test_driver_code_path = os.path.join(test_driver_dir, downstream + ".py")
-            with open(test_driver_code_path, mode="w") as wf:
-                wf.write(test_driver_code)
-            
-            log_file = open(os.path.join(log_dir, downstream + ".log"), mode="w")
-            cost = test_code(test_driver_code_path, log_file)
-            log_file.close()
-            total_cost = cost
-            conn.execute("insert or replace into %s values (?,?,?,?,?,?)" % (upstream, ), (upstream, sha, downstream, "", "", cost))
-        elif downstream in ("asdf", "astroimtools", "astroplan", "astropy", "ccdproc", "photutils", "poppy", "pydl",
-        "pyregion", "radio_beam", "stginga", "synphot"):
-            # test modules
-            for f in files:
-                test_driver_code = g.generate([f], downstream)
-                name = "_".join(f.split("."))
-                if not name:
-                    name = downstream
-                test_driver_code_path = os.path.join(test_driver_dir, name + ".py")
-                with open(test_driver_code_path, mode="w") as wf:
-                    wf.write(test_driver_code)
-                log_file = open(os.path.join(log_dir, name + ".log"), mode="w")
-                cost = test_code(test_driver_code_path, log_file)
-                log_file.close()
-                total_cost += cost
-                conn.execute("insert or replace into %s values (?,?,?,?,?,?)" % (upstream, ), (upstream, sha, downstream, "", f, cost))
-        elif downstream in ("numpy", "scipy", "statsmodels"):
-            # test modules
-            for f in files:
-                test_driver_code = g.generate([f], downstream)
-                name = "_".join(f.split("."))
-                if not name:
-                    name = downstream
-                test_driver_code_path = os.path.join(test_driver_dir, name + ".py")
-                with open(test_driver_code_path, mode="w") as wf:
-                    wf.write(test_driver_code)
-                log_file = open(os.path.join(log_dir, name + ".log"), mode="w")
-                cost = test_code(test_driver_code_path, log_file)
-                log_file.close()
-                total_cost += cost
-                conn.execute("insert or replace into %s values (?,?,?,?,?,?)" % (upstream, ), (upstream, sha, downstream, "", f, cost))
-        else:
-            # test files 
-            for f in files:
-                test_driver_code = g.generate([f], downstream)
-                test_driver_code_path = os.path.join(test_driver_dir, "_".join(f.split(".")) + ".py")
-                with open(test_driver_code_path, mode="w") as wf:
-                    wf.write(test_driver_code)
-                log_file = open(os.path.join(log_dir, "_".join(f.split(".")) + ".log"), mode="w")
-                cost = test_code(test_driver_code_path, log_file)
-                log_file.close()
-                total_cost += cost
-                conn.execute("insert or replace into %s values (?,?,?,?,?,?)" % (upstream, ), (upstream, sha, downstream, f, "", cost))
-        conn.execute("insert or replace into %s values (?,?,?,?,?,?)" % (upstream, ), (upstream, sha, downstream, "", "", total_cost))
-        conn.commit()
-    conn.close()
+                if not len(files):
+                    files = [""]
+                
+                g = test_driver_generator(downstream)
+                
+                log_dir = os.path.join("test_logs", upstream, version, downstream)
+                try:
+                    os.makedirs(log_dir)
+                except:
+                    pass
+                total_cost = 0
+                test_driver_dir = os.path.join("test_drivers", upstream, version, downstream)
+                try:
+                    os.makedirs(test_driver_dir)
+                except:
+                    pass
+                if downstream in ("bottleneck", "brian2", "gammapy", "h5py", "networkx", "numba", "numexpr", "obspy", "pandas",
+                                "skbio", "tables", "theano", "verde"):
+                    # test all
+                    test_driver_code = g.generate(files, downstream)
+                    test_driver_code_path = os.path.join(test_driver_dir, downstream + ".py")
+                    with open(test_driver_code_path, mode="w") as wf:
+                        wf.write(test_driver_code)
+                    
+                    log_file = open(os.path.join(log_dir, downstream + ".log"), mode="w")
+                    cost = test_code(test_driver_code_path, log_file)
+                    log_file.close()
+                    total_cost = cost
+                    conn.execute("insert or replace into %s values (?,?,?,?,?,?)" % (upstream, ), (upstream, version, downstream, "", "", cost))
+                elif downstream in ("asdf", "astroimtools", "astroplan", "astropy", "ccdproc", "photutils", "poppy", "pydl",
+                "pyregion", "radio_beam", "stginga", "synphot"):
+                    # test modules
+                    for f in files:
+                        test_driver_code = g.generate([f], downstream)
+                        name = "_".join(f.split("."))
+                        if not name:
+                            name = downstream
+                        test_driver_code_path = os.path.join(test_driver_dir, name + ".py")
+                        with open(test_driver_code_path, mode="w") as wf:
+                            wf.write(test_driver_code)
+                        log_file = open(os.path.join(log_dir, name + ".log"), mode="w")
+                        cost = test_code(test_driver_code_path, log_file)
+                        log_file.close()
+                        total_cost += cost
+                        conn.execute("insert or replace into %s values (?,?,?,?,?,?)" % (upstream, ), (upstream, version, downstream, "", f, cost))
+                elif downstream in ("numpy", "scipy", "statsmodels"):
+                    # test modules
+                    for f in files:
+                        test_driver_code = g.generate([f], downstream)
+                        name = "_".join(f.split("."))
+                        if not name:
+                            name = downstream
+                        test_driver_code_path = os.path.join(test_driver_dir, name + ".py")
+                        with open(test_driver_code_path, mode="w") as wf:
+                            wf.write(test_driver_code)
+                        log_file = open(os.path.join(log_dir, name + ".log"), mode="w")
+                        cost = test_code(test_driver_code_path, log_file)
+                        log_file.close()
+                        total_cost += cost
+                        conn.execute("insert or replace into %s values (?,?,?,?,?,?)" % (upstream, ), (upstream, version, downstream, "", f, cost))
+                else:
+                    # test files 
+                    for f in files:
+                        test_driver_code = g.generate([f], downstream)
+                        test_driver_code_path = os.path.join(test_driver_dir, "_".join(f.split(".")) + ".py")
+                        with open(test_driver_code_path, mode="w") as wf:
+                            wf.write(test_driver_code)
+                        log_file = open(os.path.join(log_dir, "_".join(f.split(".")) + ".log"), mode="w")
+                        cost = test_code(test_driver_code_path, log_file)
+                        log_file.close()
+                        total_cost += cost
+                        conn.execute("insert or replace into %s values (?,?,?,?,?,?)" % (upstream, ), (upstream, version, downstream, f, "", cost))
+                conn.execute("insert or replace into %s values (?,?,?,?,?,?)" % (upstream, ), (upstream, version, downstream, "", "", total_cost))
+                conn.commit()
+        conn.close()
 
 
 if __name__ == "__main__":

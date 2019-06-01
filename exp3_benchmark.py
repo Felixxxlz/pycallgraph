@@ -44,7 +44,9 @@ def main():
         versions = [sha for sha in config[upstream]]
         conn = sqlite3.connect("benchmark_test_logs/databases/test_info.db")
         for version in versions:
-            os.chdir(os.path.join("repos", upstream))
+            if upstream == "sklearn":
+                tmp_upstream = "scikit-learn"
+            os.chdir(os.path.join("repos", tmp_upstream))
             p = Popen(["git", "checkout", "master"])
             p.communicate()
             p = Popen(["git", "checkout", version])
@@ -54,7 +56,7 @@ def main():
             os.chdir(os.path.join("..", ".."))
 
             try:
-                p = Popen("find repos -name \"pycache\" | xargs rm -r")
+                p = Popen("find repos -name \"pycache\" | xargs rm -r", shell=True)
                 p.communicate()
             except:
                 pass
@@ -67,8 +69,11 @@ def main():
             for downstream in tqdm.tqdm(related_downstreams):
                 print(downstream)
                 pyfile_path = os.path.join("test_all", "test_" + downstream + ".py")
-                with open(os.path.join("benchmark_test_logs", upstream, version, \
-                    downstream + ".log"), mode="w") as wf:
+                log_path = os.path.join("benchmark_test_logs", upstream, version, \
+                    downstream + ".log")
+                if os.path.exists(log_path):
+                    continue
+                with open(log_path, mode="w") as wf:
                     p = Popen(["python3", pyfile_path], stdout=wf, stderr=wf)
                     start_time = time.time()
                     try:
