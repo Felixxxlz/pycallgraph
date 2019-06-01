@@ -56,7 +56,7 @@ def main():
             os.chdir(os.path.join("..", ".."))
 
             try:
-                p = Popen("find repos -name \"pycache\" | xargs rm -r", shell=True)
+                p = Popen("find repos -name \"__pycache__\" | xargs rm -r", shell=True)
                 p.communicate()
             except:
                 pass

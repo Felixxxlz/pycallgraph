@@ -1,8 +1,10 @@
 import subprocess
+from subprocess import Popen, PIPE
 import os
 import tqdm
 import sqlite3
 import time
+import json
 
 
 def init_environment():
@@ -40,7 +42,7 @@ def install_upstream(upstream, sha):
     p.communicate()
     p = subprocess.Popen(["git", "checkout", sha])
     p.communicate()
-    p = subprocess.Popen("sudo -S -H pip3 install . --no-cache-dir", shell=True, stdin=subprocess.PIPE)
+    p = subprocess.Popen("sudo -S pip3 install .", shell=True, stdin=subprocess.PIPE)
     p.communicate(bytes("Ly941122" + "\n", encoding="utf-8"))
     os.chdir(os.path.join("..", ".."))
 
@@ -49,7 +51,7 @@ def test_code(code_path: str, log_file):
     start_time = time.time()
     p = subprocess.Popen(["python3", code_path], stdout=log_file, stderr=log_file)
     try:
-        p.communicate(timeout=12600)
+        p.communicate(timeout=10800)
     except:
         p.kill()
     return time.time() - start_time
@@ -94,20 +96,14 @@ def main():
         conn = sqlite3.connect('test_logs/databases/test_info.db')
         for version in versions:
             try:
-                p = Popen("find repos -name \"pycache\" | xargs rm -r", shell=True)
+                p = Popen("find repos -name \"__pycache__\" | xargs rm -r", shell=True)
                 p.communicate()
             except:
                 pass
             install_upstream(upstream, version)
-            for item in config[upstream][version]:
+            for item in tqdm.tqdm(config[upstream][version]):
                 downstream = item["downstream"]
                 files = item["files"]
-
-                if downstream in ("alphalens", "joblib", "numpy_buffer", "indi", "nilearn", "astroplan", "sympy", "tables", "theano", "pymc3", "numba"):
-                    continue
-
-                if not len(files):
-                    files = [""]
                 
                 g = test_driver_generator(downstream)
                 
