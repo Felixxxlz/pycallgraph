@@ -46,6 +46,8 @@ def main():
         for version in versions:
             if upstream == "sklearn":
                 tmp_upstream = "scikit-learn"
+            else:
+                tmp_upstream = upstream
             os.chdir(os.path.join("repos", tmp_upstream))
             p = Popen(["git", "checkout", "master"])
             p.communicate()
