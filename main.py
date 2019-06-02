@@ -212,7 +212,7 @@ def main(repo):
         # pytest.main(["./REPOS/chainer_sklearn"])
         # pytest.main(["./REPOS/sklearn-evaluation"])
         # pytest.main(["./REPOS/sklearn2"])
-        pytest.main(["./REPOS/sklearn_lvq"])
+        pytest.main(["./REPOS/sklearn-lvq"])
 
     end_time = time.time()
     print(end_time - start_time)

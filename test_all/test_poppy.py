@@ -1,0 +1,2 @@
+import poppy
+poppy.test()
