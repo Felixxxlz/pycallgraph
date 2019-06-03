@@ -51,7 +51,7 @@ def test_code(code_path: str, log_file):
     start_time = time.time()
     p = subprocess.Popen(["python3", code_path], stdout=log_file, stderr=log_file)
     try:
-        p.communicate(timeout=10800)
+        p.communicate(timeout=3600)
     except:
         p.kill()
     return time.time() - start_time
