@@ -39,7 +39,7 @@ def main():
     upstreams = ("numpy", "scipy", "astropy", "pandas", "sklearn")
     with open("exp3_config_related_downstreams.json", mode="r") as rf:
         config = json.load(rf)
-    for upstream in upstreams[:1]:
+    for upstream in upstreams[3:]:
         init_environment()
         versions = [sha for sha in config[upstream]]
         conn = sqlite3.connect("benchmark_test_logs/databases/test_info.db")
@@ -69,14 +69,14 @@ def main():
                 pass
             related_downstreams = [item["downstream"] for item in config[upstream][version]]
             for downstream in tqdm.tqdm(related_downstreams):
-                if downstream not in ("sklearn_lvq", "geometer", "randomgen"):
-                    continue
+                # if downstream not in ("sklearn_lvq", "geometer", "randomgen"):
+                #     continue
                 print(downstream)
                 pyfile_path = os.path.join("test_all", "test_" + downstream + ".py")
                 log_path = os.path.join("benchmark_test_logs", upstream, version, \
                     downstream + ".log")
-                if os.path.exists(log_path):
-                    continue
+                # if os.path.exists(log_path):
+                #     continue
                 with open(log_path, mode="w") as wf:
                     p = Popen(["python3", pyfile_path], stdout=wf, stderr=wf)
                     start_time = time.time()
