@@ -122,7 +122,7 @@ def main():
                                 "skbio", "tables", "theano", "verde"):
                     # test all
                     test_driver_code = g.generate(files, downstream)
-                    test_driver_code_path = os.path.join(test_driver_dir, downstream + ".py")
+                    test_driver_code_path = os.path.join(test_driver_dir, "test_driver_" + downstream + ".py")
                     with open(test_driver_code_path, mode="w") as wf:
                         wf.write(test_driver_code)
                     
@@ -139,7 +139,7 @@ def main():
                         name = "_".join(f.split("."))
                         if not name:
                             name = downstream
-                        test_driver_code_path = os.path.join(test_driver_dir, name + ".py")
+                        test_driver_code_path = os.path.join(test_driver_dir, "test_driver_" + name + ".py")
                         with open(test_driver_code_path, mode="w") as wf:
                             wf.write(test_driver_code)
                         log_file = open(os.path.join(log_dir, name + ".log"), mode="w")
@@ -154,7 +154,7 @@ def main():
                         name = "_".join(f.split("."))
                         if not name:
                             name = downstream
-                        test_driver_code_path = os.path.join(test_driver_dir, name + ".py")
+                        test_driver_code_path = os.path.join(test_driver_dir, "test_driver_" + name + ".py")
                         with open(test_driver_code_path, mode="w") as wf:
                             wf.write(test_driver_code)
                         log_file = open(os.path.join(log_dir, name + ".log"), mode="w")
@@ -166,10 +166,11 @@ def main():
                     # test files 
                     for f in files:
                         test_driver_code = g.generate([f], downstream)
-                        test_driver_code_path = os.path.join(test_driver_dir, "_".join(f.split(".")) + ".py")
+                        name = "_".join(f.split("."))
+                        test_driver_code_path = os.path.join(test_driver_dir, "test_driver_" + name + ".py")
                         with open(test_driver_code_path, mode="w") as wf:
                             wf.write(test_driver_code)
-                        log_file = open(os.path.join(log_dir, "_".join(f.split(".")) + ".log"), mode="w")
+                        log_file = open(os.path.join(log_dir, name + ".log"), mode="w")
                         cost = test_code(test_driver_code_path, log_file)
                         log_file.close()
                         total_cost += cost
