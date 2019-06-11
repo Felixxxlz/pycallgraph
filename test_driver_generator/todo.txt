@@ -1,0 +1,14 @@
+
+pandas 似乎没发现单独测试某个文件/模块的接口
+tables 同没发现单独测试某个文件/模块的接口
+theano 为啥又没找到。。
+networkx 还是没找到。。
+obspy 没有python脚本测试的接口，过会再看
+gammapy 没找到。。
+h5py https://github.com/h5py/h5py/blob/master/h5py/tests/__init__.py
+scikit-bio
+numexpr 没找到接口
+bottleneck ...
+brian2 
+numba
+verde 没接口
