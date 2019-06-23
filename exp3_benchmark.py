@@ -36,7 +36,7 @@ def init_environment():
 
 
 def main():
-    upstreams = ("numpy", "scipy", "astropy", "pandas", "sklearn")
+    upstreams = ("numpy", "scipy", "astropy", "sklearn", "pandas")
     with open("exp3_config_related_downstreams.json", mode="r") as rf:
         config = json.load(rf)
     for upstream in upstreams[3:]:

@@ -87,10 +87,10 @@ def test_driver_generator(downstream):
 
 
 def main():
-    upstreams = ("numpy", "scipy", "astropy", "pandas", "sklearn")
+    upstreams = ("numpy", "scipy", "astropy", "sklearn", "pandas")
     with open("exp3_config_related_downstreams.json", mode="r") as rf:
         config = json.load(rf)
-    for upstream in upstreams:
+    for upstream in upstreams[2:-1]:
         init_environment()
         versions = [sha for sha in config[upstream]]
         conn = sqlite3.connect('test_logs/databases/test_info.db')
